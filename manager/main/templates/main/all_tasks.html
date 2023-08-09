@@ -1,0 +1,22 @@
+{% extends 'layout/base.html' %}
+{% load static %} <!--загружает модуль расширения-->
+
+{% block title %}
+    Главная|Управление ИТ-проектами {{ title }}
+{% endblock %}
+
+{% block extra_head_links %}
+    <link rel="stylesheet" type="text/css" href="{% static 'main/css/index.css' %}">
+{% endblock %}
+
+{% block content %}
+    {% for task in tasks %}
+        <h2>{{ task.title }}</h2>
+        <p>{{ task.content }}</p>
+        <p>Дата сдачи: {{ task.complete_date }}</p>
+        <p>Дата создания: {{ task.created }}</p>
+        <br>
+    {% endfor %}
+    {% include "main/paginator.html" with page=page_obj %}
+    <!--Типовое представление ListView передает запрошенную страницу в переменную с именем page_obj-->
+{% endblock %}

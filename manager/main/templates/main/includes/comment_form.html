@@ -1,0 +1,6 @@
+<h3>Добавление комментария</h3>
+<form action="{% url 'main:task_comment' task.id %}" method="post">
+    {{ form.as_p }}
+    {% csrf_token %}
+    <p><input type="submit" value="Добавить комментарий"></p>
+</form>

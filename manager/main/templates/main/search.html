@@ -1,0 +1,38 @@
+{% extends 'layout/base.html' %}
+{% load main_tags %}
+{% load static %} <!--загружает модуль расширения-->
+
+{% block title %}
+    Поиск
+{% endblock %}
+{% block extra_head_links %}
+    <link rel="stylesheet" type="text/css" href="{% static 'main/css/search.css' %}">
+{% endblock %}
+{% block content %}
+        {% if query %}
+        <h1>Задачи, содержащие: "{{ query }}"</h1>
+        <h3>
+            {% with results.count as total_results %}
+                Найдено {{ total_results }} результатов по запросу
+            {% endwith %}
+        </h3>
+        {% for task in results %}
+        <h4>
+            <a href="{{ task.get_absolute_url }}">
+                {{ task.title }}
+            </a>
+        </h4>
+        {{ task.content|markdown|truncatewords_html:12 }}
+        {% empty %}
+            <p>Результатов поиска по запросу не найдено.</p>
+        {% endfor %}
+        <a href="{% url 'main:task_search' %}" class="btn btn-outline-dark">Повторить поиск.</a>
+        {% else %}
+
+            <h1>Поиск задачи</h1>
+            <form method="get">
+                {{ form.as_p }}
+                <input type="submit" value="Найти" class="btn btn-outline-dark">
+            </form>
+        {% endif %}
+{% endblock %}
