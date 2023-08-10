@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from members.forms import RegisterUserForm
+from accounts.forms import RegisterUserForm, UserEditForm, ProfileEditForm
+from .models import Profile
 # Create your views here.
 
 def login_user(request):
@@ -33,9 +34,12 @@ def register_user(request):
             user = authenticate(username=username, password=password)
             login(request, user)
             messages.success(request, ("Вы вошли в аккаунт."))
+            Profile.objects.create(user=user)
             return redirect('main:home')
     else: 
         form = RegisterUserForm()
     return render(request, 'authentication/register_user.html', {'form': form,})
 
+
+@login.required
 

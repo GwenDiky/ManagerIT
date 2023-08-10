@@ -36,6 +36,7 @@ SITE_ID = 1
 # Application definition
 
 INSTALLED_APPS = [
+    'accounts',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,7 +44,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main',
-    'members',
     'taggit',
     'django.contrib.sites',
     'django.contrib.sitemaps',
@@ -61,6 +61,9 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'manager.urls'
+
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
 
 TEMPLATES = [
     {

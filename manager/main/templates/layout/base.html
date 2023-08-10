@@ -30,18 +30,18 @@
                   </li>
                   {% if request.user.is_authenticated %}
                   <li class="nav-item">
-                    <a class="nav-link" href="{% url 'members:logout' %}">Выйти</a>
+                    <a class="nav-link" href="{% url 'accounts:logout' %}">Выйти</a>
                   </li>
 
                   <li class="nav-item">
-                    <a class="nav-link" href="{% url 'members:password-change' %}">Сменить пароль</a>
+                    <a class="nav-link" href="{% url 'accounts:password_change' %}">Сменить пароль</a>
                   </li>
                   {% else %}
                   <li class="nav-item">
-                    <a class="nav-link" href="{% url 'members:login' %}">Войти</a>
+                    <a class="nav-link" href="{% url 'accounts:login' %}">Войти</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="{% url 'members:register_user' %}">Зарегистрироваться</a>
+                    <a class="nav-link" href="{% url 'accounts:register_user' %}">Зарегистрироваться</a>
                   </li>
                   {% endif %}
                   <li class="nav-item dropdown">
