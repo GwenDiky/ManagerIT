@@ -42,4 +42,3 @@ def register_user(request):
 
 
 @login.required
-
