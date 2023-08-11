@@ -65,6 +65,9 @@ ROOT_URLCONF = 'manager.urls'
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 
+LOGIN_REDIRECT_URL = 'http://127.0.0.1:8000/'
+LOGOUT_REDIRECT_URL = 'http://127.0.0.1:8000/'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -152,3 +155,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend', #стандартный бэкенд для аутентификации с помощью пользовательского имени и пароля
+    'accounts.authentication.EmailAuthBackend', #собственный бэкенд аутентификации с применением электронной почты
+]  

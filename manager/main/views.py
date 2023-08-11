@@ -15,6 +15,7 @@ from django.db.models import Count
 from django import template 
 from django.contrib.postgres.search import SearchVector, \
                                         SearchQuery, SearchRank
+from django.contrib import messages 
 
 
 def index(request, tag_slug=None): #контроллер / представление. параметр request необходим для всех функций-представлений.

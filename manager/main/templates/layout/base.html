@@ -34,8 +34,13 @@
                   </li>
 
                   <li class="nav-item">
+                    <a class="nav-link" href="{% url 'accounts:edit' %}">Редактировать профиль</a>
+                  </li>
+
+                  <li class="nav-item">
                     <a class="nav-link" href="{% url 'accounts:password_change' %}">Сменить пароль</a>
                   </li>
+
                   {% else %}
                   <li class="nav-item">
                     <a class="nav-link" href="{% url 'accounts:login' %}">Войти</a>
@@ -75,6 +80,20 @@
               
         </nav>
   
+        
+        {% if messages %}
+          <ul class='messages'>
+            {% for message in messages %}
+              <li class="{{ message.tags }}">
+
+                {{ message|safe }}
+                <a href="#" class="close">x</a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+
         <section>
             {% block content %}
             {% endblock %}
