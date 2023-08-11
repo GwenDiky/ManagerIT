@@ -1,0 +1,18 @@
+{% extends 'layout/base.html' %}
+
+{% block title %}Редактируйте аккаунт{% endblock %}
+
+{% block content %}
+    <h1>Редактирование аккаунта</h1>
+
+    <form method="POST" encrypte='multipart/form-data'>
+        <!--Атрибут encrypte чтобы обеспечить закачивание файлов на сайт-->
+        
+        {{ user_form.as_p }}
+        {{ profile_form.as_p }}
+        {% csrf_token %}
+        <p><input type="submit" value="Сохранить изменения"></p>
+
+        
+    </form>
+{% endblock %}

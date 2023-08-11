@@ -11,6 +11,7 @@ app_name = "accounts"
 urlpatterns = [
     path('register_user', views.register_user, name="register_user"),
     path('', include('django.contrib.auth.urls')),
+    path('edit/', views.edit, name='edit'),
 ]
 
 """path('login_user', views.login_user, name="login"),
