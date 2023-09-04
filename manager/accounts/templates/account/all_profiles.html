@@ -1,0 +1,33 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block title %}Аккаунты{% endblock %}
+
+{% block extra_head_links %}
+    <link rel="stylesheet" type="text/css" href="{% static 'accounts/css/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+    {% for profile in all_profiles %}
+    <h3> {{ profile.user.first_name }} {{ profile.user.last_name }}</h3>
+    <ul style='list-style-type: none; margin: 0px; padding: 0px;'>
+        {% if profile.user.is_active == True %}
+            <li class='connection' style='color: green;'>В сети</li>
+        {% else %}
+            <li class='connection' style='color: red;'>Оффлайн</li>
+        {% endif %}
+        <li>Имя пользователя: {{ profile.user.username }}</li>
+        <li>Почта: {{ profile.user.email }}</li>
+        <li>Id: {{ profile.user.id }}</li>
+        <hr>
+        <li>Дата создания аккаунта: {{ profile.user.date_joined }}</li>
+        <li>Последняя активность: {{ profile.user.last_login }}</li>
+        <hr>
+        <li>Администратор: {{ profile.user.is_superuser }}</li>
+        <li>Стафф: {{ profile.user.is_staff }}</li>
+    </ul>
+
+    <br><br>
+    {% endfor %}
+
+{% endblock %}

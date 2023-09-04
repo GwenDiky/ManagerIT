@@ -9,23 +9,65 @@
 {% endblock %}
 
 {% block content %}
-        <h3>{{ task.title }}</h3>
-        <br>
-        <p><b>В разработке участвуют:</b> {{ task.person }}</p>
-        <p><b>Описание задачи:</b> {{ task.content|markdown|truncatewords_html:30 }}</p>
-        <p><b>Тип задачи:</b> {{ task.type }}</p>
-        <p><b>Компания:</b> {{ task.company }}</p>
-        <p><b>Статус:</b> {{ task.status }}</p>
-        <p><b>Дата редактирования:</b> {{ task.updated }}</p>
-        <p><b>Дата создания:</b> {{ task.created }}</p>
-        <p><b>Дата завершения:</b> {{ task.complete_date }}</p>
-        <p><b>Теги:</b> {{ task.tags.all|join:', ' }}</p>
-        <p>
-            <a  class="btn btn-primary btn-lg active" role="button" href="{% url 'main:task_share' task.id %}">Поделиться задачей</a>
-        </p>
-        {{ task.image.image }}
-        <h3>Похожие посты</h3>
+    <a class='btn btn-outline-dark' href="{% url 'main:home' %}">Назад</a>
+    <br><br>
+            <h3>{{ task.title }}</h3>
+            <ul class='detail-list' style='padding-left: 0px;'>
+            <li style='padding: 0px;'><b>В разработке участвуют:</b> {{ task.person }};</li>
+            <li><b>Описание задачи:</b> {{ task.content }}</li>
+            <li><b>Тип задачи:</b> {{ task.type }};</li>
+            <li><b>Компания:</b> {{ task.company }};</li>
+            <li><b>Статус:</b> {% if task.status.title == '+' %}
+            Завершена;{%  endif %}</li>
+            <li><b>Создана:</b> {{ task.created }};</li>
+            <li><b>Последнее изменение:</b> {{ task.updated }};</li>
+            <li><b>Срок:</b> {{ task.complete_date }};</li>
+            <hr>
+            <li><b>Теги:</b> {{ task.tags.all|join:', ' }}</li></ul>
+            <hr>
+            <p>
+                <a class="btn btn-outline-dark btn-lg" role="button" href="{% url 'main:task_share' task.id %}">Поделиться</a>
+                <a class='btn btn-outline-primary btn-lg' role='button' href='edit/{{ task.id }}'>Редактировать</a>
+                <a class='btn btn-outline-danger btn-lg' role='button' href='delete/{{ task.id }}'>Удалить</a>
+            </p>
+            {{ task.image.image }}
 
+        <div class="comment_section">
+            {% include "main/includes/comment_form.html" %}
+        </div>
+
+
+
+        <hr>
+        {% with comments.count as total_comments %}
+        <h3>
+            Количество комментариев: {{ total_comments }}
+        </h3>
+    {% endwith %}
+
+        {% for comment in comments %}
+        <div class="comment">
+            <div class="card" style="width: 25rem;">
+            <p class="info">
+                
+                    <div class="card-body">
+                      <h5 class="card-title">{{ comment.name }}</h5>
+                      <h6 class="card-subtitle mb-2 text-muted">{{ comment.created|date:"d M Y"  }}</h6>
+                      <p class="card-text">{{ comment.body|linebreaks }}</p>
+                    </div>
+                  </div>
+            </p>
+        </div>
+            <br>
+        </div>
+        {% empty %}
+        <p>Нет комментариев.</p>
+    {% endfor %}
+    <br>
+
+        <footer>
+        <hr>
+        <h3>Похожие посты:</h3>
         {% for task in similiar_tasks %}
             <p>
                 <a href="{{ task.get_absolute_url }}">{{ task.title }}</a>
@@ -33,29 +75,8 @@
             {% empty %}
             Похожих постов нет.
         {% endfor %}
-
+        
         <br><br>
+        </footer>
 
-        {% with comments.count as total_comments %}
-            <h3>
-                Количество комментариев: {{ total_comments }}
-            </h3>
-        {% endwith %}
-
-        {% for comment in comments %}
-            <div class="comment">
-                <p class="info">
-                    Комментарий {{ forloop.counter }} написанный {{ comment.name }}
-                    {{ comment.created }}
-                </p>
-                {{ comment.body|linebreaks }}
-                <br>
-            </div>
-            {% empty %}
-            <p>Нет комментариев.</p>
-        {% endfor %}
-        <br>
-        <div class="comment_section">
-            {% include "main/includes/comment_form.html" %}
-        </div>
 {% endblock %}

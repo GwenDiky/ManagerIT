@@ -9,6 +9,20 @@ class TaskForm(ModelForm):
         model = Task
         fields = "__all__"
 
+    def __init__(self, *args, **kwargs):
+        super(TaskForm, self).__init__(*args, **kwargs)
+        self.fields['title'].widget.attrs['class'] = 'form-control'
+        self.fields['slug'].widget.attrs['class'] = 'form-control'
+        self.fields['tags'].widget.attrs['class'] = 'form-control'
+        self.fields['content'].widget.attrs['class'] = 'form-control'
+        self.fields['image'].widget.attrs['class'] = 'form-control'
+        self.fields['type'].widget.attrs['class'] = 'form-control'
+        self.fields['person'].widget.attrs['class'] = 'form-control'
+        self.fields['company'].widget.attrs['class'] = 'form-control'
+        self.fields['status'].widget.attrs['class'] = 'form-control'
+        self.fields['complete_date'].widget.attrs['class'] = 'form-control'
+    
+
 class EmailPostForm(forms.Form):
     name = forms.CharField(max_length=50, label="Имя")
     email = forms.EmailField(label="Электронная почта отправителя")

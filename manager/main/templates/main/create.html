@@ -5,11 +5,11 @@
     <head>
         <meta charset="UTF-8">
         <title>Главная|Управление ИТ-проектами</title>
-        <link rel="stylesheet" type="text/css" href="{% static 'main/css/by_statuses.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'main/css/create.css' %}">
     </head>
     <body>
         {% block content %}
-        <form method="post">
+        <form method="post" class='creation_form'>
             {% csrf_token %}
             {{ form.as_p }}
             <input type="submit" value="Добавить">

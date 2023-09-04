@@ -4,7 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from accounts.forms import RegisterUserForm, UserEditForm, ProfileEditForm
 from .models import Profile
+from django.views.generic.detail import DetailView
+from django.contrib.auth.models import User
 from django.contrib import messages
+from django.shortcuts import render, get_object_or_404
 # Create your views here.
 
 def login_user(request):
@@ -64,3 +67,23 @@ def edit(request):
                   'account/edit.html', 
                   {'user_form':user_form,
                    'profile_form':profile_form})
+
+def show_profile(request):
+    profiles = Profile.objects.filter(user = request.user)
+    return render(request, 'account/profile.html', {'profiles': profiles})
+
+def all_profiles(request):
+    all_profiles = Profile.objects.exclude(user = request.user)
+    return render(request, 'account/all_profiles.html', {'all_profiles':all_profiles})
+
+"""class ShowProfilePageView(DetailView):
+    model = Profile
+    template_name = 'account/profile.html'
+
+    def get_context_data(self, *args, **kwargs):
+        users = Profile.objects.all()
+        context = super(ShowProfilePageView, self).get_context_data(self, **kwargs)
+        page_user = get_object_or_404(Profile, id=self.kwargs['pk'])
+        context['page_user'] = page_user
+        return context"""
+    

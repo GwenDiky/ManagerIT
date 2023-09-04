@@ -17,11 +17,13 @@
                     <a class="add_button" href="{% url 'main:add' %}">Добавить</a>
                 </div>
                 <div class="info">
+                {% if request.user.is_authenticated %}
                 {% if tag %}
                     <h3>Посты, помечанные тегом "{{ tag.name }}"</h3>
                 {% else %}
                     <h3>Общее число постов: {% total_tasks %}</h3>
                 {% endif %}
+                
                 {% for task in tasks %}
                     <div class="box">
                         <a href="{{ task.get_absolute_url }}"><b>{{ task.title|capfirst }}</b></a>
@@ -39,6 +41,7 @@
                         </p>
                     </div>
                 {% endfor %}
+               
                 {% include "main/paginator.html" with page=tasks %}
                 <br>
                 <h3>Недавние задачи:</h3>
@@ -54,7 +57,9 @@
                     {% endfor %}
                 </ul>
 
+
                 </div>
             </div>
+            {% endif %}
         </div>
 {% endblock %}

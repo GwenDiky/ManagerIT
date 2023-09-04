@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 from .models import Task, Status, Comment
 from django.template import loader
 from django.views.generic.edit import CreateView
@@ -161,3 +161,27 @@ def task_search(request):
                    'query':query,
                    'results':results}
                   )
+
+def delete(request, year, month, day, task, id):
+    try:
+        task = Task.objects.get(id=id)
+        task.delete()
+        return HttpResponseRedirect(reverse_lazy('main:home'))
+    except:
+        return HttpResponseRedirect(reverse_lazy('main:home'))
+    
+def edit(request, year, month, day, task, id):
+    try:
+        task = Task.objects.get(id=id)
+        if request.method == 'POST':
+            task.title = request.POST.get('title')
+            task.complete_date = request.POST.get('complete_date')
+            task.content = request.POST.get('content')
+            task.tags = request.POST.get('tags')
+            task.type = request.POST.get('type')
+            task.save()
+            return HttpResponseRedirect("/")
+        else:
+            return render(request, 'main/edit.html', {'task':task})
+    except Task.DoesNotExist:
+        return HttpResponseNotFound('<h2>Задача не найдена</h2>')

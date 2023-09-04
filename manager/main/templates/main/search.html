@@ -10,19 +10,15 @@
 {% endblock %}
 {% block content %}
         {% if query %}
-        <h1>Задачи, содержащие: "{{ query }}"</h1>
-        <h3>
+        <h3>Задачи, содержащие: "{{ query|capfirst }}"</h3>
+        <h5>
             {% with results.count as total_results %}
-                Найдено {{ total_results }} результатов по запросу
+            Найдено {{ total_results }} результатов по запросу
             {% endwith %}
-        </h3>
+        </h5>
         {% for task in results %}
-        <h4>
-            <a href="{{ task.get_absolute_url }}">
-                {{ task.title }}
-            </a>
-        </h4>
-        {{ task.content|markdown|truncatewords_html:12 }}
+        <h4><a href="{{ task.get_absolute_url }}">{{ task.title }}</a></h4>
+        <b>Описание:</b> {{ task.content|markdown|truncatewords_html:12 }}
         {% empty %}
             <p>Результатов поиска по запросу не найдено.</p>
         {% endfor %}

@@ -42,13 +42,13 @@ class Company(models.Model):
 
 # Менеджер, позволяющий извлекать посты, используя обозначение Task.status.all() (Task.my_manager.status())
 # конкретно-прикладной менеджер
-
+"""
 class DifficultManager(models.Manager):
     def get_queryset(self) -> QuerySet: #возвращает набор запросов QuerySet, который будет исполнен
         return super().get_queryset()\
             .filter(type = Task.Types.DIFFICULT)
     # переопределили этот метод, чтобы сформировать конкретно-прикладной набор запросов QuerySet, фильтрующий посты по их статусу и возвращающий поочередный набор запросов QuerySet, содержащий посты только со статусом NOT_PREPARE
-
+"""
 
 class DoneManager(models.Manager):
     def get_queryset(self) -> QuerySet:
@@ -83,7 +83,7 @@ class Task(models.Model):
     updated = models.DateTimeField(auto_now=True, verbose_name="Дата редактирования")
     created = models.DateTimeField(auto_now_add = True, db_index = True, verbose_name="Дата создания")
     complete_date = models.DateField(_("Дата завершения"), blank=True)
-    difficult = DifficultManager() # конкретно-прикладной менеджер
+    #difficult = DifficultManager() # конкретно-прикладной менеджер
     objects = models.Manager() # менеджер, применяемый по умолчанию
     done_tasks = DoneManager() # конкретно-прикладной менеджер
     proccess_tasks = ProccessManager()

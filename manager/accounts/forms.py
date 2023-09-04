@@ -40,6 +40,13 @@ class UserEditForm(forms.ModelForm):
         model = User
         fields = ['first_name', 'last_name', 'email']
 
+    def __init__(self, *args, **kwargs):
+        super(UserEditForm, self).__init__(*args, **kwargs)
+        self.fields['first_name'].widget.attrs['class'] = 'form-control'
+        self.fields['last_name'].widget.attrs['class'] = 'form-control'
+        self.fields['email'].widget.attrs['class'] = 'form-control'
+
+
     def clean_email(self):
         data = self.cleaned_data['email']
         qs = User.objects.exclude(id = self.instance.id).filter(email=data)
@@ -53,6 +60,11 @@ class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['date_of_birth', 'photo']
+
+    def __init__(self, *args, **kwargs):
+        super(ProfileEditForm, self).__init__(*args, **kwargs)
+        self.fields['date_of_birth'].widget.attrs['class'] = 'form-control'
+        self.fields['photo'].widget.attrs['class'] = 'form-control'
 
 
 "ProfileEditForm позволит пользователям редактировать данные профиля, сохраненные в конкретно-прикладной модели Profile"
