@@ -23,6 +23,7 @@ urlpatterns = [
     # <int:id> - конвертер пути
     path('feed/', LatestTasksFeed(), name='task_feed'),
     path('search/', views.task_search, name="task_search"),
+    path('main_page/', views.main_page, name='main_page'),
 ]
 
 

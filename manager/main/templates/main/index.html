@@ -13,20 +13,20 @@
             <div class="container">
                 <div class="title">
                     <h1>IT Project Manager</h1>
-                    <p id="description">Make each day your masterpiece <i class="fa-sharp fa-regular fa-star fa-spin" style="color: #ffd500;"></i></i></p>
                     <a class="add_button" href="{% url 'main:add' %}">Добавить</a>
                 </div>
                 <div class="info">
                 {% if request.user.is_authenticated %}
                 {% if tag %}
-                    <h3>Посты, помечанные тегом "{{ tag.name }}"</h3>
+                    <h3 style='font-size: 20px;'>Посты, помечанные тегом "{{ tag.name }}"</h3>
                 {% else %}
-                    <h3>Общее число постов: {% total_tasks %}</h3>
+                    <h3 style='font-size: 20px;'>Общее число постов: {% total_tasks %}</h3>
                 {% endif %}
                 
                 {% for task in tasks %}
                     <div class="box">
                         <a href="{{ task.get_absolute_url }}"><b>{{ task.title|capfirst }}</b></a>
+                        <br>
                         <p>Описание: {{ task.content|truncatewords:10 }}</p>
                         <p>Срок: {{ task.complete_date }}</p>
                         <p>Дата добавления: {{ task.date|date:"d.m.Y" }}</p>
@@ -44,10 +44,10 @@
                
                 {% include "main/paginator.html" with page=tasks %}
                 <br>
-                <h3>Недавние задачи:</h3>
+                <h3 style='font-size: 18px;'>Недавние задачи:</h3>
                 {% show_latest_tasks 3 %}
 
-                <h3>Самые комментируемые посты:</h3>
+                <h3 style='font-size: 18px;'>Самые комментируемые посты:</h3>
                 {% get_most_commented_tasks as most_commented_tasks %}
                 <ul>
                     {% for task in most_commented_tasks %}

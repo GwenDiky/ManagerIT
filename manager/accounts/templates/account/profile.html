@@ -10,15 +10,23 @@
 {% block content %}
     {% for profile in profiles %}
     <h3> {{ profile.user.first_name }} {{ profile.user.last_name }}</h3>
+
     <ul style='list-style-type: none; margin: 0px; padding: 0px;'>
         {% if profile.user.is_active == True %}
             <li class='connection' style='color: green;'>В сети</li>
         {% else %}
             <li class='connection' style='color: red;'>Оффлайн</li>
         {% endif %}
+        <br>
+        <img src="{{ profile.photo.url }}" class='rounded' alt="{{ profile.user.first_name }}" style='box-shadow: 0px 1px 3px 1px #000;'>
+        <br><br>
         <li>Имя пользователя: {{ profile.user.username }}</li>
         <li>Почта: {{ profile.user.email }}</li>
         <li>Id: {{ profile.user.id }}</li>
+        <li>Дата рождения: {{ profile.date_of_birth }}</li>
+        <li>{{ profile.user.company }}</li>
+        <li>{{ profile.user.job_title }}</li>
+        <li>{{ profile.user.city }}</li>
         <hr>
         <li>Дата создания аккаунта: {{ profile.user.date_joined }}</li>
         <li>Последняя активность: {{ profile.user.last_login }}</li>
@@ -27,5 +35,7 @@
         <li>Стафф: {{ profile.user.is_staff }}</li>
     </ul>
     {% endfor %}
+
+    <a style="color: red; font: 14px Montserrat;" href="{% url 'accounts:password_change' %}">Изменить пароль</p>
 
 {% endblock %}

@@ -1,0 +1,13 @@
+.card{
+    margin-left: 30px;
+    font: 18px Montserrat;
+    width: 70%;
+    margin: 0px auto;
+}
+
+.card a{
+    font: 22px Montserrat;
+    font-weight: 500;
+    margin-bottom: 30px;
+}
+

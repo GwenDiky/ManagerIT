@@ -6,16 +6,16 @@
 {% endblock %}
 
 {% block extra_head_links %}
-    <link rel="stylesheet" type="text/css" href="{% static 'main/css/index.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'main/css/all_tasks.css' %}">
 {% endblock %}
 
 {% block content %}
+    <p><a href="{% url 'main:task_search' %}" style='margin-left: 30px; font-family: Montserrat; font-size: 18px;'>Поиск</p>
     {% for task in tasks %}
         <div class='card'>
             <div class='card-body'>
                 <h5><a href="{{ task.get_absolute_url }}">{{ task.title }}</a></h5>
                 <p>{{ task.content }}</p>
-                <p>Слаг: {{ task.slug }}</p>
                 <p>Теги: {{ task.tags.all|join:', ' }}</p>
                 <p>Выполняют задачу: {{ task.person }}</p>
                 <p>Компания: {{ task.company }}</p>

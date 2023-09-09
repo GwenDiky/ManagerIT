@@ -16,10 +16,12 @@ from django import template
 from django.contrib.postgres.search import SearchVector, \
                                         SearchQuery, SearchRank
 from django.contrib import messages 
+from django.contrib.auth.decorators import login_required
 
 
+@login_required
 def index(request, tag_slug=None): #контроллер / представление. параметр request необходим для всех функций-представлений.
-    task_list = Task.objects.all()
+    task_list = Task.objects.filter(person = request.user)
     statuses = Status.objects.all()
     
     tag = None
@@ -51,7 +53,53 @@ class AllTasksView(ListView): #имплементация представлен
 
 def all_tasks(request):
     tasks = Task.objects.all()
-    return render(request, 'main/all_tasks.html', {'tasks':tasks})
+    
+    form = SearchForm()
+    query = None
+    results = []
+
+    if 'query' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            search_vector = SearchVector('title', config='russian', weight='A') + \
+                            SearchVector('content', weight='B')
+            search_query = SearchQuery(query, config='russian')
+            results = Task.objects.annotate(
+                search = search_vector, rank = SearchRank(search_vector, search_query),
+            ).filter(rank__gte=0.3).order_by('-rank')
+        
+    return render(request, 
+                  'main/all_tasks.html',
+                  {'form':form,
+                   'query':query,
+                   'results':results, 
+                   'tasks':tasks}
+                  )
+
+
+def main_page(request, tag_slug=None):
+    task_list = Task.objects.filter(person = request.user)
+    statuses = Status.objects.all()
+    
+    tag = None
+
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        task_list = task_list.filter(tags__in=[tag])
+
+    paginator = Paginator(task_list, 2)
+    page_number = request.GET.get('page', 1)
+    try:
+        tasks = paginator.page(page_number)
+    except EmptyPage:
+        tasks = paginator.page(paginator.num_pages)
+    except PageNotAnInteger:
+        tasks = paginator.page(1)
+
+    context = {"tasks":tasks, "statuses":statuses, 'tag':tag}
+
+    return render(request, 'main/main_page.html', context)
 
 def task_detail(request, year, month, day, task):
     task = get_object_or_404(Task, slug=task, created__year = year, created__month = month, created__day = day)

@@ -1,17 +1,8 @@
-a {
-    color: blue;
-    margin-top: 10px;
-    text-decoration: none;
-    font-size: 20px;
+h2{
+    margin-left: 20px;
 }
-
-a:hover {
-    color: black;
+.task{
+    margin-left: 20px;
+    font-family: Montserrat;
+    width: 80%;
 }
-
-body {
-    font-family: 'Times New Romans';
-    font-size: 20px;
-    margin-left: 30px; 
-}
-

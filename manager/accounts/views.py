@@ -8,6 +8,9 @@ from django.views.generic.detail import DetailView
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404
+from django.urls import reverse_lazy 
+from django.contrib.auth.views import PasswordChangeView
+from django.contrib.messages.views import SuccessMessageMixin
 # Create your views here.
 
 def login_user(request):
@@ -75,6 +78,11 @@ def show_profile(request):
 def all_profiles(request):
     all_profiles = Profile.objects.exclude(user = request.user)
     return render(request, 'account/all_profiles.html', {'all_profiles':all_profiles})
+
+class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
+    template_name = 'account/change_password.html'
+    success_message = "Пароль успешно изменен"
+    success_url = reverse_lazy('main:home')
 
 """class ShowProfilePageView(DetailView):
     model = Profile

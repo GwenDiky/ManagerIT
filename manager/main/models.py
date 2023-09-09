@@ -77,7 +77,7 @@ class Task(models.Model):
     content = models.TextField(null = True, blank = True, verbose_name = "Описание", help_text="Текст помощи: ")
     image = models.ImageField(null = True, blank = True, verbose_name="Фотография")
     type = models.CharField(max_length = 30, choices = Types.choices, default = Types.AVERAGE, verbose_name="Уровень сложности")
-    person = models.ForeignKey(User, on_delete = models.CASCADE, blank=True, null=True, related_name="app_tasks", verbose_name="Участник")
+    person = models.ManyToManyField(User, blank=True, related_name="app_tasks", verbose_name="Участник")
     company = models.ForeignKey(Company, on_delete=models.CASCADE, blank=True, null=True, verbose_name="Компания")
     status = models.ForeignKey(Status, on_delete = models.PROTECT, verbose_name="Статус", null=True)
     updated = models.DateTimeField(auto_now=True, verbose_name="Дата редактирования")
