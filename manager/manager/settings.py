@@ -38,6 +38,7 @@ SITE_ID = 1
 INSTALLED_APPS = [
     'accounts',
     'django.contrib.admin',
+    'django.contrib.postgres',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -47,7 +48,6 @@ INSTALLED_APPS = [
     'taggit',
     'django.contrib.sites',
     'django.contrib.sitemaps',
-    'django.contrib.postgres',
 ]
 
 MIDDLEWARE = [

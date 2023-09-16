@@ -51,6 +51,12 @@ body {
    cursor: pointer;
  }
 
+ 
+ #status_container a{
+  font-size: 16px;
+  font-family: Montserrat;
+}
+
 
  .recent-tasks-paragraph {
    box-sizing: border-box;

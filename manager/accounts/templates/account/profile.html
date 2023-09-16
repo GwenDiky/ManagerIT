@@ -8,31 +8,88 @@
 {% endblock %}
 
 {% block content %}
-    {% for profile in profiles %}
-    <h3> {{ profile.user.first_name }} {{ profile.user.last_name }}</h3>
 
+    {% for profile in profiles %}
     <ul style='list-style-type: none; margin: 0px; padding: 0px;'>
-        {% if profile.user.is_active == True %}
-            <li class='connection' style='color: green;'>В сети</li>
-        {% else %}
-            <li class='connection' style='color: red;'>Оффлайн</li>
+        <div class='container'>
+            <div class='row'>
+                <div class='col'>
+                    {% if profile.photo %}
+                        <!--<img src="{{ profile.photo.url }}" class='rounded' alt="{{ profile.user.first_name }}" style='box-shadow: 0px 1px 3px 1px #000;'>-->
+                        <div class='container-box'>
+                            <img class='image-container' alt="{{ profile.user.first_name }}" src="{{ profile.photo.url }}">
+                            <div class='card-container'>
+                                <div class='container-image'></div>
+                                <div class='image-container1'></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class='div-style-86a2e07e'>
+                                <div class='div-style-b74be968'>
+                                    <p class='p-style-edd184ef'>{{ profile.user.first_name }} {{ profile.user.last_name }}</p>
+                                    <div class='div-style-84f82e7a'>
+                                        <p class='p-style-5029a530'>Местоимения:</p>
+                                        {% if profile.sex == 'М' %}
+                                            <p class='p-style-d77383cd'>он/его</p>
+                                        {% elif profile.sex == 'Ж' %}
+                                            <p class='p-style-d77383cd'>она/её</p>
+                                        {% else %}
+                                            <p class='p-style-d77383cd'>они/их</p>
+                                        {% endif %}
+                                        
+                                    </div>
+                                    <div class='div-style-84f82e7a'>
+                                        <p class='p-style-5029a530'>Дата рождения: </p>
+                                        <p class='p-style-ad46357e'>{{ profile.date_of_birth }}</p>
+                                    </div>
+                                    <div class='div-style-84f82e7a'>
+                                        <p class='p-style-5029a530'>Город: </p>
+                                        <p class='p-style-ad46357e'>{{ profile.city }}, {{ profile.country }}</p>
+                                    </div>
+                                    <div class='div-style-84f82e7a'>
+                                        <p class='p-style-5029a530'>Место работы: </p>
+                                        <p class='p-style-ad46357e'>{{ profile.current_company }}</p>
+                                    </div>
+                                    
+                                </div>
+
+
+                                <div class='div-style-b74be968'>
+                                    <p class='p-style-ec3cf6b1'>{% if profile.user.is_active == True %}В сети{% else %}Оффлайн{%endif%}</p>
+                                    <div class='div-style-84f82e7a'>
+                                        <p class='p-style-5029a530'>Телефон:</p>
+                                        {% if profile.phone_number %}
+                                        <p class='p-style-d77383cd'>{{ profile.phone_number }}</p>
+                                        {% else %}
+                                        <p class='p-style-d77383cd'>-</p>
+                                        {% endif %}
+                                    </div>
+                                    <div class='div-style-84f82e7a'>
+                                        <p class='p-style-5029a530'>Должность: </p>
+                                        <p class='p-style-ad46357e'>{{ profile.job_title }}</p>
+                                    </div>
+                                    <div class='div-style-84f82e7a'>
+                                        <p class='p-style-5029a530'>Другие соцсети: </p>
+                                        <p class='p-style-ad46357e'>{{ profile.contacts }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
         {% endif %}
-        <br>
-        <img src="{{ profile.photo.url }}" class='rounded' alt="{{ profile.user.first_name }}" style='box-shadow: 0px 1px 3px 1px #000;'>
-        <br><br>
+
+        <h5>Область профессиональных интересов</h5>
+        <p>{{ profile.skills }}</p>
         <li>Имя пользователя: {{ profile.user.username }}</li>
         <li>Почта: {{ profile.user.email }}</li>
-        <li>Id: {{ profile.user.id }}</li>
-        <li>Дата рождения: {{ profile.date_of_birth }}</li>
-        <li>{{ profile.user.company }}</li>
-        <li>{{ profile.user.job_title }}</li>
-        <li>{{ profile.user.city }}</li>
-        <hr>
-        <li>Дата создания аккаунта: {{ profile.user.date_joined }}</li>
-        <li>Последняя активность: {{ profile.user.last_login }}</li>
-        <hr>
-        <li>Администратор: {{ profile.user.is_superuser }}</li>
-        <li>Стафф: {{ profile.user.is_staff }}</li>
+        <h5>О себе</h5>
+        <p>{{ profile.description }}</p>
+        <h5>Опыт работы</h5>
+        <p>{{ profile.experience_years }}</p>
+        <p>{{ profile.experience }}</p>
+        <h5>Образование</h5>
+        <p>{{ profile.education }}</p>
+
     </ul>
     {% endfor %}
 

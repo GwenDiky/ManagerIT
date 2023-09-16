@@ -42,7 +42,7 @@ def register_user(request):
             user = authenticate(username=username, password=password)
             login(request, user)
             messages.success(request, ("Вы вошли в аккаунт."))
-            Profile.objects.create(user=user)
+            #Profile.objects.create(user=user)
             return redirect('main:home')
     else: 
         form = RegisterUserForm()
@@ -70,7 +70,6 @@ def edit(request):
                   'account/edit.html', 
                   {'user_form':user_form,
                    'profile_form':profile_form})
-
 def show_profile(request):
     profiles = Profile.objects.filter(user = request.user)
     return render(request, 'account/profile.html', {'profiles': profiles})

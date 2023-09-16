@@ -1,10 +1,16 @@
 from django.forms import ModelForm
 from .models import Task, Comment
+from django.contrib.auth.models import User
 from django import forms
 
 
+class CustomMMCF(forms.ModelMultipleChoiceField):
+    def label_from_instance(self, member):
+        return "%s" % member.first_name
 
 class TaskForm(ModelForm):
+    members = CustomMMCF(queryset=User.objects.all(), widget=forms.CheckboxSelectMultiple)
+
     class Meta:
         model = Task
         fields = "__all__"

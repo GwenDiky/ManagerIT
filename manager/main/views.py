@@ -127,7 +127,7 @@ def by_status(request, status_id):
 
 
 class TaskCreateView(CreateView):
-    def get(self, request, *args, **kwargs):
+    """def get(self, request, *args, **kwargs):
         context = {"form":"TaskForm"}
         return render(request, 'main/create.html', context) 
     def post(self, request, *args, **kwargs):
@@ -136,7 +136,13 @@ class TaskCreateView(CreateView):
             task = form.save()
             task.save()
             return HttpResponseRedirect(reverse_lazy('main:home'))
-        return render(request, 'main/create.html', {'form': form})
+        return render(request, 'main/create.html', {'form': form})"""
+    model = Task
+    form_class = TaskForm
+    success_url = reverse_lazy('main:main_page')
+    template_name = 'main/create.html'
+
+
 
 
     

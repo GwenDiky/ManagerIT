@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('main', '0005_alter_status_title'),
+        ('main', '0006_alter_status_title'),
     ]
 
     operations = [
         migrations.AlterField(
             model_name='status',
             name='title',
-            field=models.CharField(choices=[('-', 'Не завершено'), ('+/-', 'В процессе'), ('+', 'Завершено')], default='-', max_length=30, verbose_name='Завершенность'),
+            field=models.CharField(choices=[('+', 'Завершено'), ('-', 'Не завершено'), ('+/-', 'В процессе')], default='-', max_length=30, verbose_name='Завершенность'),
         ),
     ]
