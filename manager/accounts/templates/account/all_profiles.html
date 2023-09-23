@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %}
-{% load static %}
+{% load main_tags %}
+{% load static %} 
 
 {% block title %}Аккаунты{% endblock %}
 
@@ -9,23 +10,20 @@
 
 {% block content %}
     {% for profile in all_profiles %}
-    <h3> {{ profile.user.first_name }} {{ profile.user.last_name }}</h3>
-    <ul style='list-style-type: none; margin: 0px; padding: 0px;'>
-        {% if profile.user.is_active == True %}
-            <li class='connection' style='color: green;'>В сети</li>
-        {% else %}
-            <li class='connection' style='color: red;'>Оффлайн</li>
-        {% endif %}
-        <li>Имя пользователя: {{ profile.user.username }}</li>
-        <li>Почта: {{ profile.user.email }}</li>
-        <li>Id: {{ profile.user.id }}</li>
-        <hr>
-        <li>Дата создания аккаунта: {{ profile.user.date_joined }}</li>
-        <li>Последняя активность: {{ profile.user.last_login }}</li>
-        <hr>
-        <li>Администратор: {{ profile.user.is_superuser }}</li>
-        <li>Стафф: {{ profile.user.is_staff }}</li>
-    </ul>
+    <div class='div-style-86a2e07e' style='width: 50%; margin-left: 30px; height: 80%;'>
+        <div class='container'>
+            <div class='row'>
+                <div class='col-sm-5'>
+                    <img class='image-container' alt="{{ profile.user.first_name }}" style='max-width: 250px; max-height: 250px;' src="{{ profile.photo.url }}">
+                </div>
+                <div class='col-sm-5'><p class='p-style-edd184ef'>{{ profile.user.first_name }} {{ profile.user.last_name }}</p>
+                    <p class='p-style-d77383cd' style='margin-left: 0px;'>@{{ profile.user.username }}</p>
+                    <p class='p-style-edd184ef' style='font-size: 17px;'>Область профессиональных интересов:</p>
+                        <p class='p-style-ad46357e' style='margin-left:0px;'>{{ profile.skills }}</p>
+                </div>
+            </div> 
+        </div>
+    </div>
 
     <br><br>
     {% endfor %}

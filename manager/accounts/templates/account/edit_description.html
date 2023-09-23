@@ -16,8 +16,7 @@
         <!--Атрибут encrypte чтобы обеспечить закачивание файлов на сайт-->
         <br><h3 style="text-align: center;">Изменение данных учетной записи</h3>
         <br>
-        {{ user_form.as_p }}
-        {{ profile_form.as_p }}
+        {{ description_form.as_p }}
         {% csrf_token %}
         <p><input type="submit" value="Сохранить" class='start-button'></p>
 

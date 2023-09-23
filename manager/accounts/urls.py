@@ -4,6 +4,9 @@ from main.views import index
 from . import views
 from django.contrib.auth import views as auth_views
 from .views import *
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 app_name = "accounts"
 
@@ -13,11 +16,18 @@ urlpatterns = [
     path('register_user', views.register_user, name="register_user"),
     path('', include('django.contrib.auth.urls')),
     path('edit/', views.edit, name='edit'),
+    path('edit/description', views.edit_description, name='edit-description'),
+    path('edit/education-and-experience', views.edit_education_and_experience, name='edit-education-and-experience'),
     path('profile/', views.show_profile, name='show_profile'),
     path('all_profiles/', views.all_profiles, name='all_profiles'),
     path('password_change/', ChangePasswordView.as_view(), name='password_change'),
 ]
 
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, 
+                        document_root = settings.MEDIA_ROOT)
+    
 """path('login_user', views.login_user, name="login"),
     path('logout_user', views.logout_user, name="logout"),"""
 

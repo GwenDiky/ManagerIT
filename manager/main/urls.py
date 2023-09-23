@@ -1,6 +1,6 @@
 from django.urls import path
 from main.views import index, by_status
-from main.views import TaskCreateView #представление
+from main.views import TaskCreateView, UserList, UserDetail, TaskList, TaskDetail
 from main import views
 from django.contrib import admin
 from .feeds import LatestTasksFeed
@@ -10,7 +10,6 @@ app_name = "main" #именное пространство
 #маршрутизатор
 urlpatterns = [
     path('', index, name="home"),
-    #path('all_tasks/', views.all_tasks, name="all_tasks"),
     path('all_tasks/', views.AllTasksView.as_view(), name="all_tasks"),
     path('<int:status_id>/', views.by_status, name="by_status"), #именованный маршрут
     path('add/', TaskCreateView.as_view(), name='add'),
@@ -24,6 +23,12 @@ urlpatterns = [
     path('feed/', LatestTasksFeed(), name='task_feed'),
     path('search/', views.task_search, name="task_search"),
     path('main_page/', views.main_page, name='main_page'),
+
+    # сереализаторы 
+    path('users/', UserList.as_view()),
+    path('users/<int:pk>', UserDetail.as_view()),
+    path('tasks/', TaskList.as_view()),
+    path('tasks/<int:pk>', TaskDetail.as_view()),
 ]
 
 

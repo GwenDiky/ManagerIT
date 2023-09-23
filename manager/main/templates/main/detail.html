@@ -9,11 +9,12 @@
 {% endblock %}
 
 {% block content %}
+<div style='margin-left: 30px;'>
     <a class='btn btn-outline-dark' href="{% url 'main:main_page' %}">Назад</a>
     <br><br>
             <h3>{{ task.title }}</h3>
             <ul class='detail-list' style='padding-left: 0px;'>
-            <li style='padding: 0px;'><b>В разработке участвуют:</b> {{ task.person }};</li>
+            <li style='padding: 0px;'><b>В разработке участвуют:</b> {{ task.person|join:", " }};</li>
             <li><b>Описание задачи:</b> {{ task.content }}</li>
             <li><b>Тип задачи:</b> {{ task.type }};</li>
             <li><b>Компания:</b> {{ task.company }};</li>
@@ -78,5 +79,6 @@
         
         <br><br>
         </footer>
+    </div>
 
 {% endblock %}

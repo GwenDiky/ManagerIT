@@ -17,6 +17,9 @@ from django.contrib.postgres.search import SearchVector, \
                                         SearchQuery, SearchRank
 from django.contrib import messages 
 from django.contrib.auth.decorators import login_required
+from rest_framework import generics
+from . import serializers
+from django.contrib.auth.models import User
 
 
 @login_required
@@ -239,3 +242,25 @@ def edit(request, year, month, day, task, id):
             return render(request, 'main/edit.html', {'task':task})
     except Task.DoesNotExist:
         return HttpResponseNotFound('<h2>Задача не найдена</h2>')
+    
+
+class UserList(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = serializers.UserSerializer
+
+class UserDetail(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = serializers.UserSerializer
+
+class TaskList(generics.ListAPIView):
+    queryset = Task.objects.all()
+    serializer_class = serializers.TaskSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(person=self.request.user) # перезаписали функцию по умолчанию, чтобы задать поле person текущего пользователя
+
+class TaskDetail(generics.RetrieveAPIView):
+    queryset = Task.objects.all()
+    serializer_class = serializers.TaskSerializer
+
+    

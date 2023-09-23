@@ -6,6 +6,10 @@ from phonenumber_field.formfields import PhoneNumberField
 from phonenumber_field.widgets import PhoneNumberPrefixWidget
 
 class RegisterUserForm(UserCreationForm):
+    """username = forms.CharField(label='username', min_length=5, max_length=150)  
+    email = forms.EmailField(label='email')  
+    password1 = forms.CharField(label='password', widget=forms.PasswordInput)  
+    password2 = forms.CharField(label='Confirm password', widget=forms.PasswordInput)"""
     first_name = forms.CharField(label="Имя", max_length=50, widget=forms.TextInput(attrs={'class':'form-control'}))
     surname = forms.CharField(label="Отчество", max_length=50, widget=forms.TextInput(attrs={'class':'form-control'}), required=False)
     last_name = forms.CharField(label="Фамилия", max_length=50, widget=forms.TextInput(attrs={'class':'form-control'}))
@@ -23,19 +27,21 @@ class RegisterUserForm(UserCreationForm):
         ),
         )
     experience_years = forms.DecimalField(label='Опыт', widget=forms.NumberInput(attrs={'class':'form-control', 'size':10}),
-                                          help_text='Опыт работы должен быть реальным. В годах' )
+                                          help_text='Опыт работы должен быть реальным (в годах).' )
+    #photo = forms.ImageField(required=False)
     experience = forms.CharField(label='Опыт работы', widget=forms.Textarea(attrs={'class':'form-control'}), max_length=300)
     education = forms.CharField(label='Образование', widget=forms.Textarea(attrs={'class':'form-control'}), max_length=300)
     contacts = forms.CharField(label='Соцсети', widget=forms.Textarea(attrs={'class':'form-control'}), max_length=300)
 
     class Meta:
         model = User 
-        fields = ('first_name', 'surname', 'last_name', 'username', 'email', 'company', 'country', 'city', 'job_title', 'experience_years', 'password1', 'password2', 'education', 'contacts', 'description')
+        fields = ('first_name', 'surname', 'last_name', 'username', 'email', 'company', 'country', 'city', 'job_title', 'experience_years', 'phone_number', 'password1', 'password2', 'education', 'contacts', 'description',)
     def __init__(self, *args, **kwargs):
         super(RegisterUserForm, self).__init__(*args, **kwargs)
-        self.fields['username'].widget.attrs['class'] = 'form-control'
-        self.fields['password1'].widget.attrs['class'] = 'form-control'
-        self.fields['password2'].widget.attrs['class'] = 'form-control'
+        self.fields['username'].widget.attrs.update({'class': 'form-control'})
+        self.fields['password1'].widget.attrs.update({'class': 'form-control'})
+        self.fields['password2'].widget.attrs.update({'class': 'form-control'})
+
 
     def clean_password2(self):
         cd = self.cleaned_data
@@ -82,12 +88,43 @@ class UserEditForm(forms.ModelForm):
 class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['date_of_birth', 'photo']
+        fields = ['sex', 'date_of_birth',  'city', 'country', 'contacts',]
 
     def __init__(self, *args, **kwargs):
         super(ProfileEditForm, self).__init__(*args, **kwargs)
+        self.fields['sex'].widget.attrs['class'] = 'form-control'
         self.fields['date_of_birth'].widget.attrs['class'] = 'form-control'
-        self.fields['photo'].widget.attrs['class'] = 'form-control'
+        #self.fields['photo'].widget.attrs['class'] = 'form-control'
+        
+
+        self.fields['city'].widget.attrs['class'] = 'form-control'
+        self.fields['country'].widget.attrs['class'] = 'form-control'
+
+        self.fields['contacts'].widget.attrs['class'] = 'form-control'
+
 
 
 "ProfileEditForm позволит пользователям редактировать данные профиля, сохраненные в конкретно-прикладной модели Profile"
+
+
+class ProfileDescriptionEditForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['description',]
+
+    def __init__(self, *args, **kwargs):
+        super(ProfileDescriptionEditForm, self).__init__(*args, **kwargs)
+        self.fields['description'].widget.attrs['class'] = 'form-control'
+
+class ProfileEducationAndExperienceEditForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['job_title', 'skills', 'education', 'experience', ]
+
+    def __init__(self, *args, **kwargs):
+        super(ProfileEducationAndExperienceEditForm, self).__init__(*args, **kwargs)
+        self.fields['education'].widget.attrs['class'] = 'form-control'
+        self.fields['experience'].widget.attrs['class'] = 'form-control'
+
+        self.fields['skills'].widget.attrs['class'] = 'form-control'
+        self.fields['job_title'].widget.attrs['class'] = 'form-control'

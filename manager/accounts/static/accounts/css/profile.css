@@ -20,13 +20,13 @@ section {
     padding: 9px 14px;
     background: rgb(255, 255, 255);
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    width: 70%;
+    width: 100%;
   }
   .image-container {
     box-sizing: border-box;
     display: block;
     flex: 0 0 auto;
-    width: 319px;
+    width: 500px;
     max-width: initial;
     height: 343px;
     border: none;
@@ -59,13 +59,18 @@ section {
     padding-right: 44px;
     padding-left: 43px;
     margin-top: 16px;
-    background: #f2f2f7;
+    background: #ffffff;
     border-radius: 40px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    width: 100%;
   }
   .container-image {
     box-sizing: border-box;
     flex: 0 0 auto;
+  }
+
+  .container-image a {
+    margin-right: 20px;
   }
   .image-container3 {
     box-sizing: border-box;
@@ -100,7 +105,7 @@ section {
     gap: 8px;
     align-items: flex-start;
     justify-content: space-between;
-    max-width: 721px;
+    
     padding: 25px 39px 77px 42px;
     background: white;
     border-radius: 40px;
@@ -220,3 +225,97 @@ section {
     color: black;
   }
   
+
+  .experience-card {
+    box-sizing: border-box;
+    padding: 29px 9px 261px;
+    background: white;
+    border-radius: 40px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
+  .experience-summary {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+  .experience-summary1 {
+    box-sizing: border-box;
+    flex: 0 1 auto;
+    max-width: 175px;
+    font: 400 20px Montserrat;
+    color: black;
+  }
+  .experience-years {
+    box-sizing: border-box;
+    flex: 0 0 auto;
+    padding-top: 19px;
+    padding-bottom: 5px;
+    margin-left: -12px;
+    font: 400 20px Montserrat;
+    color: black;
+  }
+
+  
+  .experience-section {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    margin-top: 17px;
+  }
+  .experience-text {
+    box-sizing: border-box;
+    flex: 0 0 auto;
+    padding-right: 5px;
+    padding-left: 5px;
+    font: 400 20px Montserrat;
+    color: black;
+  }
+  .experience-text1 {
+    box-sizing: border-box;
+    flex: 0 0 auto;
+    max-width: 317px;
+    margin-top: 17px;
+    font: 400 18px Montserrat;
+    color: black;
+  }
+
+  #about_me {
+    margin: 0 auto;
+  }
+
+  #about_me1{
+    background: white;
+    border-radius: 40px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    box-sizing: border-box;
+  }
+
+  #about_me1 .row{
+    margin-top: 20px;
+    margin-right: 20px;
+  }
+
+  #about_me1 .row p{
+    margin-left: 30px;
+  }
+  #about_me2{
+    background: white;
+    border-radius: 40px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    box-sizing: border-box;
+  }
+
+  #about_me2 .row{
+    margin-top: 20px;
+    margin-right: 20px;
+  }
+
+  #about_me2 .row p{
+    margin-left: 30px;
+  }

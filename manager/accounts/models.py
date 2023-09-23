@@ -3,6 +3,9 @@ from django.conf import settings
 from PIL import Image
 from phonenumber_field.modelfields import PhoneNumberField
 from main.models import Company
+from django.contrib.auth.models import User
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 
 class Profile(models.Model):
@@ -20,7 +23,7 @@ class Profile(models.Model):
     follows = models.ManyToManyField('self', related_name='followed_by', symmetrical=False, blank=True, verbose_name='Подписчики')
     date_of_birth = models.DateField(blank=True, null=True, verbose_name="Дата рождения")
     phone_number = PhoneNumberField(blank=True, null=True, verbose_name='Номер телефона')
-    photo = models.ImageField(upload_to="users/%Y/%m/%d/", blank=True, verbose_name="Фото профиля", null=True)
+    #photo = models.ImageField(upload_to="users/%Y/%m/%d/", blank=True, verbose_name="Фото профиля", null=True)
     current_company = models.CharField(default='В поиске работы', max_length=100, verbose_name='Текущая работа')
     country = models.CharField(default='Беларусь', max_length=50, verbose_name='Страна')
     city = models.CharField(blank=True, null=True, verbose_name='Город', max_length=50)
@@ -39,7 +42,7 @@ class Profile(models.Model):
         verbose_name_plural = "Профили"
         verbose_name = "Профиль"
 
-    def save(self, *args, **kwargs):
+    """def save(self, *args, **kwargs):
         super().save()
         img = Image.open(self.photo.path)
 
@@ -51,7 +54,13 @@ class Profile(models.Model):
     @property
     def image_url(self):
         if self.photo and hasattr(self.photo, 'url'):
-            return self.photo.url
+            return self.photo.url"""
+        
+    """@receiver(post_save, sender=User)
+    def update_profile_signal(sender, instance, created, **kwargs):
+        if created:
+            Profile.objects.create(user=instance)
+        instance.profile.save()"""
 
 
 
