@@ -94,7 +94,7 @@
                                     <div class="w-100"></div>
                                     <div class='col'>
                                         <p class='p-style-edd184ef' style='font-size: 20px;'>Область профессиональных интересов</h5>
-                                        <p class='p-style-ad46357e' style='margin-left:0px;'>{{ profile.skills }}</p>
+                                        <p class='p-style-ad46357e' style='margin-left:0px;'>{{ profile.skills|capfirst }}</p>
 
                                     </div>
                                 </div>
@@ -111,11 +111,11 @@
                             <a href="{% url 'accounts:edit-education-and-experience' %}"><i class="fi fi-rr-pencil" style='margin-left: 10px;'></i></a>
                         </p></div>
                         <div class='row'><p class='p-style-edd184ef' style='font-size: 20px;'>Опыт работы: </p>
-                            <p class='p-style-ad46357e' style='font-size: 16px;'>{{ profile.experience }}</p>
+                            <p class='p-style-ad46357e' style='font-size: 16px;'>{{ profile.experience|capfirst }}</p>
                         </div>
                         <div class='row'>
                             <p class='p-style-edd184ef' style='font-size: 20px;'>Образование: </p>
-                            <p class='p-style-ad46357e' style='font-size: 16px;'>{{ profile.education }}</p>
+                            <p class='p-style-ad46357e' style='font-size: 16px;'>{{ profile.education|capfirst }}</p>
                         </div>
                     </div>
                     <div class='col-sm-7 offset-1' id='about_me2'>

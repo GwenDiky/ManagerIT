@@ -18,12 +18,13 @@ class Profile(models.Model):
         (NONE, "Неопределен")
     }
 
+    id = models.AutoField(primary_key=True)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, verbose_name="Пользователь")
     sex = models.CharField(max_length=30, verbose_name='Гендер', choices=GENDERS, blank=True, null=True)
     follows = models.ManyToManyField('self', related_name='followed_by', symmetrical=False, blank=True, verbose_name='Подписчики')
     date_of_birth = models.DateField(blank=True, null=True, verbose_name="Дата рождения")
     phone_number = PhoneNumberField(blank=True, null=True, verbose_name='Номер телефона')
-    #photo = models.ImageField(upload_to="users/%Y/%m/%d/", blank=True, verbose_name="Фото профиля", null=True)
+    photo = models.ImageField(upload_to="users/%Y/%m/%d/", blank=True, verbose_name="Фото профиля", null=True, default='users/default.png')
     current_company = models.CharField(default='В поиске работы', max_length=100, verbose_name='Текущая работа')
     country = models.CharField(default='Беларусь', max_length=50, verbose_name='Страна')
     city = models.CharField(blank=True, null=True, verbose_name='Город', max_length=50)
@@ -65,6 +66,7 @@ class Profile(models.Model):
 
 
 class Contact(models.Model):
+    id = models.AutoField(primary_key=True)
     user_from = models.ForeignKey('auth.User', related_name='rel_from_set', on_delete=models.CASCADE)
     user_to = models.ForeignKey('auth.User', related_name='rel_to_set', on_delete=models.CASCADE)
     created = models.DateField(auto_now_add=True)

@@ -1,6 +1,5 @@
 from django.contrib import admin
 from django.urls import path, include
-from main.views import index
 from django.contrib.sitemaps.views import sitemap
 from main.sitemaps import TaskSitemap
 from django.conf import settings

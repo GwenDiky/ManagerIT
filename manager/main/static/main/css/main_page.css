@@ -151,13 +151,22 @@ body {
 .additional-info .row .col-3 p{
   color: white;
   margin-top: 20px;
-  font: 24px Montserrat;
+  font: 20px Montserrat;
 }
+
 
 
 .additional-info .row .col-3 ul {
   color: white;
   margin-top: 20px;
-  font: 20px Montserrat;
+  font: 16px Montserrat;
   list-style-type: "\1F308";
+}
+
+
+#footer-last{
+  color: white;
+  font: 16px Montserrat;
+  text-decoration: none;
+  margin-left: 100px;
 }

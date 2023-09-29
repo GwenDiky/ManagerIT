@@ -1,19 +1,27 @@
 from django.forms import ModelForm
 from .models import Task, Comment
 from django.contrib.auth.models import User
+from accounts.models import Profile
 from django import forms
 
 
 class CustomMMCF(forms.ModelMultipleChoiceField):
     def label_from_instance(self, member):
-        return "%s" % member.first_name
+        return "%s" % member.user.first_name
 
 class TaskForm(ModelForm):
-    members = CustomMMCF(queryset=User.objects.all(), widget=forms.CheckboxSelectMultiple)
+    """person = forms.ModelMultipleChoiceField(
+        queryset=Profile.objects.all(),
+        widget=forms.CheckboxSelectMultiple(), label='Участники'
+    )"""
+    person = CustomMMCF(queryset=Profile.objects.exclude(user_id = 36), widget=forms.CheckboxSelectMultiple(attrs={'class':'special'}), label='Участники')
 
     class Meta:
         model = Task
         fields = "__all__"
+        widgets = {
+            'complete_date':forms.TextInput(attrs={'type':'date'}),
+        }
 
     def __init__(self, *args, **kwargs):
         super(TaskForm, self).__init__(*args, **kwargs)
@@ -23,7 +31,6 @@ class TaskForm(ModelForm):
         self.fields['content'].widget.attrs['class'] = 'form-control'
         self.fields['image'].widget.attrs['class'] = 'form-control'
         self.fields['type'].widget.attrs['class'] = 'form-control'
-        self.fields['person'].widget.attrs['class'] = 'form-control'
         self.fields['company'].widget.attrs['class'] = 'form-control'
         self.fields['status'].widget.attrs['class'] = 'form-control'
         self.fields['complete_date'].widget.attrs['class'] = 'form-control'

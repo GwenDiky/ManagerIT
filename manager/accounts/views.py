@@ -118,6 +118,12 @@ def show_profile(request):
     profiles = Profile.objects.filter(user = request.user)
     return render(request, 'account/profile.html', {'profiles': profiles})
 
+def show_profile_by_pk(request, pk):
+    user = User.objects.get(pk = pk)
+    profiles = Profile.objects.filter(user = user)
+
+    return render(request, 'account/profile.html', {'profiles': profiles})
+
 def all_profiles(request):
     all_profiles = Profile.objects.exclude(user = request.user)
     return render(request, 'account/all_profiles.html', {'all_profiles':all_profiles})

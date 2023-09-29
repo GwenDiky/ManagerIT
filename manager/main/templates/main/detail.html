@@ -10,11 +10,15 @@
 
 {% block content %}
 <div style='margin-left: 30px;'>
-    <a class='btn btn-outline-dark' href="{% url 'main:main_page' %}">Назад</a>
+    <a class='btn btn-outline-dark' href="{% url 'main:all_tasks' %}">Назад</a>
     <br><br>
             <h3>{{ task.title }}</h3>
             <ul class='detail-list' style='padding-left: 0px;'>
-            <li style='padding: 0px;'><b>В разработке участвуют:</b> {{ task.person|join:", " }};</li>
+            <li style='padding: 0px;'><b>В разработке участвуют:</b> 
+                {% for user in task.person.all %}
+                        <a href='{% url "accounts:profile" user.id %}' style='font-size: 15px; text-decoration: underline;'>{{ user.username }}</a>,
+                {% endfor %}
+            </li>
             <li><b>Описание задачи:</b> {{ task.content }}</li>
             <li><b>Тип задачи:</b> {{ task.type }};</li>
             <li><b>Компания:</b> {{ task.company }};</li>
@@ -24,7 +28,12 @@
             <li><b>Последнее изменение:</b> {{ task.updated }};</li>
             <li><b>Срок:</b> {{ task.complete_date }};</li>
             <hr>
-            <li><b>Теги:</b> {{ task.tags.all|join:', ' }}</li></ul>
+            <li><b>Теги:</b>
+                {% for tag in task.tags.all %}
+                <a href="{% url 'main:task_list_by_tag' tag.slug %}">{{ tag.slug }}</a>
+                    {% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </li></ul>
             <hr>
             <p>
                 <a class="btn btn-outline-dark btn-lg" role="button" href="{% url 'main:task_share' task.id %}">Поделиться</a>

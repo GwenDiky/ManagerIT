@@ -11,3 +11,18 @@
     margin-bottom: 30px;
 }
 
+
+.card p a{
+    font: 18px Montserrat;
+    text-decoration: underline;
+    margin-bottom: 30px;
+}
+
+
+.search_button {
+    margin-top: 10px;
+}
+
+.search-tasks{
+    margin-bottom: 30px;
+}

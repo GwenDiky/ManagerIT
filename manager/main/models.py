@@ -19,6 +19,7 @@ class Status(models.Model):
         (IN_PROCESS, "В процессе"),
         (DONE, "Завершено")
     }
+    id = models.AutoField(primary_key=True)
     title = models.CharField(max_length = 30, choices = TITLES, verbose_name="Завершенность", default = NOT_PREPARE)
     def __str__(self):
         return self.title
@@ -32,6 +33,7 @@ class Status(models.Model):
 
 
 class Company(models.Model):
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length = 100)
     def __str__(self):
         return self.name
@@ -71,6 +73,7 @@ class Task(models.Model):
         AVERAGE = 'Средняя', 'Средняя сложность'
         EASY = 'Легкая', 'Минимальная сложность'
         __empty__ = 'Уровень сложности задачи не указан'
+    id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=250, verbose_name = "Заголовок")
     tags = TaggableManager()
     slug = models.SlugField(max_length=250, verbose_name="Слаг", unique_for_date='created')
@@ -103,6 +106,7 @@ class Task(models.Model):
         return self.title
     
 class Comment(models.Model):
+    id = models.AutoField(primary_key=True)
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="comments") #каждый комментарий связан с 1 постом (многие-к-одному)
     # атрибут related_name позволяет назначать имя атрибуту, который используется для связи от ассоциированного объекта назад к нему
     # задачу комментированного объекта можно извлекать посредством comments.task  и все комментарии ассоциированные с объектом-задачей посредством task.comments.all()

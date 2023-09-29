@@ -6,6 +6,7 @@
     Главная|Управление ИТ-проектами {{ title }}
 {% endblock %}
 {% block extra_head_links %}
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
     <link rel="stylesheet" type="text/css" href="{% static 'main/css/main_page.css' %}">
 {% endblock %}
 {% block content %}
@@ -110,36 +111,48 @@
         </div>
 
         <div class='row'>
-          <div class='support' style='background-color: #a9bfca; height: 100px; margin-top: 50px;'>
+          <div class='support' style='background-color: #a9bfca; height: 50px; margin-top: 50px;'>
+            <div class='row' id='footer-last' style='margin-left: 100px; margin-top: 15px; text-decoration: underline;'>
+              <div class='row'>
+                  <div class='col-2'>Privary Police</div>
+                  <div class='col-2'>Terms Of Use</div>
+                  <div class='col-2'>Contact Us</div>
+              </div>
+          
           </div>
         </div>
 
         <div class='row'>
-          <div class='additional-info' style='background-color: #95a5bc; height: 200px;'>
+          <div class='additional-info' style='background-color: #95a5bc; height: 270px; width: 100%;'>
             <div class='row'>
-              <div class='col-3' style='margin-left: 100px;'><p>Learn more
-                <ul>
-                  <li>Пункт 1</li>
-                  <li>Пункт 2</li>
-                </ul>
-
-              </p></div>
-              <div class='col-3'><p>Follow Us
-
+              <div class='col-3' style='margin-left: 100px;'><p>Learn More
+                <p style='font-size: 16px; margin-top: 0px;'>Our Team</p>
+                <p style='font-size: 16px; margin-top: 0px;'>Consult With Us</p>
+                <p style='font-size: 16px; margin-top: 0px;'>Our Services</p>
               </p>
-              <ul>
-                <li>Пункт 1</li>
-                <li>Пункт 2</li>
-              </ul></div>
-              
-              <div class='col-3'><p> Support Us
-
-                <ul>
-                  <li>Пункт 1</li>
-                  <li>Пункт 2</li>
-                </ul>
+            
+            
+            </div>
+              <div class='col-3'><p class='title'><span style='margin-right: 255px;'>Follow Us</span>
+            
+                <p style='font-size: 16px; margin-top: 0px;'>Telegram</p>
+                <p style='font-size: 16px; margin-top: 0px;'>LinkedIn</p>
+                <p style='font-size: 16px; margin-top: 0px;'>Instagram</p>
 
               </p></div>
+              
+              <div class='col-3'><p class='title'><span style='margin-right: 270px;'>Products</span>
+                <p style='font-size: 16px; margin-top: 0px;'>List</p>
+                <p style='font-size: 16px; margin-top: 0px;'>Task</p>
+                <p style='font-size: 16px; margin-top: 0px;'>Profile</p>
+
+              </p></div>
+
+              <hr>
+              <div id='footer-last'>
+                <p><b>ⓒ Copyright</b> 2023 ManagerIT Incorporated. All rights reserved.</p>
+                <p>Made with &#128151; by Gwen Diky</p>
+              </div>
             </div>
           </div>
         </div>

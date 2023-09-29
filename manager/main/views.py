@@ -21,32 +21,6 @@ from rest_framework import generics
 from . import serializers
 from django.contrib.auth.models import User
 
-
-@login_required
-def index(request, tag_slug=None): #контроллер / представление. параметр request необходим для всех функций-представлений.
-    task_list = Task.objects.filter(person = request.user)
-    statuses = Status.objects.all()
-    
-    tag = None
-
-    if tag_slug:
-        tag = get_object_or_404(Tag, slug=tag_slug)
-        task_list = task_list.filter(tags__in=[tag])
-
-    paginator = Paginator(task_list, 2)
-    page_number = request.GET.get('page', 1)
-    try:
-        tasks = paginator.page(page_number)
-    except EmptyPage:
-        tasks = paginator.page(paginator.num_pages)
-    except PageNotAnInteger:
-        tasks = paginator.page(1)
-
-    context = {"tasks":tasks, "statuses":statuses, 'tag':tag}
-
-    return render(request, 'main/index.html', context)
-
-
 class AllTasksView(ListView): #имплементация представления, основанного на классе, которое наследуется от класса ListView
     queryset = Task.objects.all() #используется для того, чтобы иметь конкретно-прикладной набор запросов QuerySet, не извлекая все объекты. 
     # вместо определения атрибута queryset мы могли бы указать model=Task и Django сформировал бы типовой набор запросов Task.objects.all()
@@ -54,12 +28,19 @@ class AllTasksView(ListView): #имплементация представлен
     paginate_by = 10 # возвращает 5 объектов на страницу
     template_name = 'main/all_tasks.html' # конкретно-прикладной шаблон
 
-def all_tasks(request):
+@login_required
+def all_tasks(request, tag_slug = None): #контроллер / представление. параметр request необходим для всех функций-представлений.
     tasks = Task.objects.all()
     
     form = SearchForm()
     query = None
     results = []
+
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        tasks = tasks.filter(tags__in=[tag])
+    else:
+        tag = None
 
     if 'query' in request.GET:
         form = SearchForm(request.GET)
@@ -77,10 +58,11 @@ def all_tasks(request):
                   {'form':form,
                    'query':query,
                    'results':results, 
-                   'tasks':tasks}
+                   'tasks':tasks,
+                   'tag':tag}
                   )
 
-
+@login_required
 def main_page(request, tag_slug=None):
     task_list = Task.objects.filter(person = request.user)
     statuses = Status.objects.all()

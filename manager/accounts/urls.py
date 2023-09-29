@@ -1,6 +1,5 @@
 from django.contrib import admin
 from django.urls import path, include
-from main.views import index
 from . import views
 from django.contrib.auth import views as auth_views
 from .views import *
@@ -19,6 +18,7 @@ urlpatterns = [
     path('edit/description', views.edit_description, name='edit-description'),
     path('edit/education-and-experience', views.edit_education_and_experience, name='edit-education-and-experience'),
     path('profile/', views.show_profile, name='show_profile'),
+    path('profile/<int:pk>', views.show_profile_by_pk, name='profile'),
     path('all_profiles/', views.all_profiles, name='all_profiles'),
     path('password_change/', ChangePasswordView.as_view(), name='password_change'),
 ]
