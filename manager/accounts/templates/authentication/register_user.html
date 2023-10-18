@@ -13,20 +13,22 @@
 {% if form.errors %}
     <mark>При попытке зарегистрироваться произошла ошибка.</mark>
 {% endif %}
-<ul class='error-list' style='color: red; text-decoration: none'>
+<ul class='error-list' style='color: red; text-decoration: none; list-style-type: none;'>
   <li>{{form.errors.experience_years}}</li>
-  <!--<li>{{ form.errors.experience_years.help_text }}</li>
   <li>{% for error in form.errors%}
       {{ error.help_text }}
     {% endfor %}
-  </li>-->
+  </li>
 </ul>
-
-    <form action="{% url 'accounts:register_user' %}" method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary" style="margin-top: 20px; height: 40px;">Зарегистрироваться</button>
-    <br><br>
-</form>
+<div class='container'>
+  <div class='row' style='width: 100%;'>
+      <form action="{% url 'accounts:register_user' %}" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Зарегистрироваться" class='start-button'>
+        <br><br>
+      </form>
+    </div>
+</div>
 
 {% endblock %}

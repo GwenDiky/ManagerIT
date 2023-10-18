@@ -24,11 +24,16 @@ urlpatterns = [
     path('search/', views.task_search, name="task_search"),
     path('main_page/', views.main_page, name='main_page'),
 
+    # pdf 
+    path('all_tasks/pdf', views.tasks_pdf, name='tasks_pdf'),
+    path('<int:year>/<int:month>/<int:day>/<slug:task>/task_pdf/<int:id>', views.task_pdf, name='task_pdf'),
+    
     # сереализаторы 
     path('users/', UserList.as_view()),
     path('users/<int:pk>', UserDetail.as_view()),
     path('tasks/', TaskList.as_view()),
     path('tasks/<int:pk>', TaskDetail.as_view()),
+
 ]
 
 

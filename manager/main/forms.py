@@ -14,8 +14,9 @@ class TaskForm(ModelForm):
         queryset=Profile.objects.all(),
         widget=forms.CheckboxSelectMultiple(), label='Участники'
     )"""
-    person = CustomMMCF(queryset=Profile.objects.exclude(user_id = 36), widget=forms.CheckboxSelectMultiple(attrs={'class':'special'}), label='Участники')
+    person = CustomMMCF(queryset=Profile.objects.exclude(user__id = 36), widget=forms.CheckboxSelectMultiple(attrs={'class':'special'}), label='Участники')
 
+    # Profile.objects.exclude(user__id = 36)
     class Meta:
         model = Task
         fields = "__all__"

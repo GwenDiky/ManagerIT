@@ -95,4 +95,11 @@ p{
   }
 
 
+#icons {
+  padding-top: 40px;
+}
   
+#icons a img{
+  width: 70%;
+
+}

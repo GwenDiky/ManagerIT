@@ -1,5 +1,11 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound, FileResponse
+import io
+from reportlab.pdfgen import canvas 
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 from .models import Task, Status, Comment
 from django.template import loader
 from django.views.generic.edit import CreateView
@@ -12,12 +18,15 @@ from django.core.mail import send_mail
 from django.views.decorators.http import require_POST
 from taggit.models import Tag
 from django.db.models import Count
+from django.db.models import Case, When, Value, CharField
 from django import template 
+import datetime
+from datetime import datetime
 from django.contrib.postgres.search import SearchVector, \
                                         SearchQuery, SearchRank
 from django.contrib import messages 
 from django.contrib.auth.decorators import login_required
-from rest_framework import generics
+from rest_framework import generics, permissions
 from . import serializers
 from django.contrib.auth.models import User
 
@@ -30,7 +39,19 @@ class AllTasksView(ListView): #имплементация представлен
 
 @login_required
 def all_tasks(request, tag_slug = None): #контроллер / представление. параметр request необходим для всех функций-представлений.
-    tasks = Task.objects.all()
+    priority_values = [Status.NOT_PREPARE, Status.DONE, Status.IN_PROCESS]
+
+    priority_values = ["+/-", "-", "+"]
+    
+    tasks = Task.objects.annotate(
+        custom_order=Case(
+            When(status__title = "+/-", then=1),
+            When(status__title = "-", then=2),
+            When(status__title = "+", then=3),
+            default=4,  # Можете добавить значение по умолчанию, если есть другие статусы
+            output_field=CharField()
+        )
+    ).filter(status__title__in=priority_values, person = request.user).order_by('custom_order')
     
     form = SearchForm()
     query = None
@@ -52,6 +73,15 @@ def all_tasks(request, tag_slug = None): #контроллер / предста�
             results = Task.objects.annotate(
                 search = search_vector, rank = SearchRank(search_vector, search_query),
             ).filter(rank__gte=0.3).order_by('-rank')
+
+    paginator = Paginator(tasks, 4)
+    page_number = request.GET.get('page', 1)
+    try:
+        tasks = paginator.get_page(page_number)
+    except EmptyPage:
+        tasks = paginator.get_page(paginator.num_pages)
+    except PageNotAnInteger:
+        tasks = paginator.get_page(1)
         
     return render(request, 
                   'main/all_tasks.html',
@@ -59,7 +89,8 @@ def all_tasks(request, tag_slug = None): #контроллер / предста�
                    'query':query,
                    'results':results, 
                    'tasks':tasks,
-                   'tag':tag}
+                   'tag':tag,
+                   'page_obj':page_number}
                   )
 
 @login_required
@@ -245,4 +276,76 @@ class TaskDetail(generics.RetrieveAPIView):
     queryset = Task.objects.all()
     serializer_class = serializers.TaskSerializer
 
+
+def task_pdf(request, year, month, day, task, id):
+    buffer = io.BytesIO()
+    c = canvas.Canvas(buffer, pagesize = letter, bottomup = 0)
+    text_object = c.beginText()
+    text_object.setTextOrigin(inch, inch)
     
+    MyFontObject = TTFont('Arial', 'arial.ttf')
+    pdfmetrics.registerFont(MyFontObject)
+    text_object.setFont("Arial", 14)
+
+    task = Task.objects.get(id=id)
+    lines = [f"Название задачи: {task.title}", f"{task.content}", f"Компания: {task.company}", f"Дедлайн: {str(task.complete_date)}"]
+
+    lines.append("Участвуют в задаче:")
+    i = 1
+    for person in task.person.all():
+        lines.append(f"{i}) {person.username}")
+
+    for line in lines:
+        text_object.textLine(line)
+
+    c.drawText(text_object)
+    c.showPage()
+    c.save()
+
+    buffer.seek(0)
+
+    return FileResponse(buffer, as_attachment=True, filename=f'{task.title}.pdf')
+
+
+def tasks_pdf(request):
+    # create bytestream buffer
+    buffer = io.BytesIO()
+    c = canvas.Canvas(buffer, pagesize = letter, bottomup = 0)
+    text_object = c.beginText()
+    text_object.setTextOrigin(inch, inch)
+    
+
+    MyFontObject = TTFont('Arial', 'arial.ttf')
+    pdfmetrics.registerFont(MyFontObject)
+    text_object.setFont("Arial", 14)
+
+    tasks = Task.objects.all()
+
+    lines = []
+
+    for task in tasks:
+        lines.append(f"Название задачи: {task.title}")
+        lines.append(task.content)
+        lines.append("Участвуют в задаче:")
+
+        i = 1
+        for person in task.person.all():
+            lines.append(f"{i}) {person.username}")
+            i += 1
+        lines.append(f"Компания: {task.company}")
+        lines.append(f"Дедлайн: {str(task.complete_date)}")
+        lines.append("================================================")
+
+    for line in lines:
+        text_object.textLine(line)
+
+    c.drawText(text_object)
+    c.showPage()
+    c.save()
+
+    buffer.seek(0)
+
+    return FileResponse(buffer, as_attachment=True, filename='tasks.pdf')
+
+
+

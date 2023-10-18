@@ -4,8 +4,10 @@ from PIL import Image
 from phonenumber_field.modelfields import PhoneNumberField
 from main.models import Company
 from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.dispatch import receiver
 from django.db.models.signals import post_save
+from django.contrib.auth import get_user_model
 
 
 class Profile(models.Model):
@@ -20,6 +22,8 @@ class Profile(models.Model):
 
     id = models.AutoField(primary_key=True)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, verbose_name="Пользователь")
+    first_name = models.CharField(max_length=30, verbose_name='Имя', blank=True, null=True)
+    last_name = models.CharField(max_length=30, verbose_name='Фамилия', blank=True, null=True)
     sex = models.CharField(max_length=30, verbose_name='Гендер', choices=GENDERS, blank=True, null=True)
     follows = models.ManyToManyField('self', related_name='followed_by', symmetrical=False, blank=True, verbose_name='Подписчики')
     date_of_birth = models.DateField(blank=True, null=True, verbose_name="Дата рождения")
@@ -39,29 +43,12 @@ class Profile(models.Model):
     def __str__(self):
         return f"Профиль {self.user.username}" 
     
+    def get_full_name(self):
+        return self.first_name + " " + self.last_name
+
     class Meta:
         verbose_name_plural = "Профили"
         verbose_name = "Профиль"
-
-    """def save(self, *args, **kwargs):
-        super().save()
-        img = Image.open(self.photo.path)
-
-        if img.height > 300 or img.width > 300:
-            new_img = (300, 300)
-            img.thumbnail(new_img)
-            img.save(self.photo.path)
-
-    @property
-    def image_url(self):
-        if self.photo and hasattr(self.photo, 'url'):
-            return self.photo.url"""
-        
-    """@receiver(post_save, sender=User)
-    def update_profile_signal(sender, instance, created, **kwargs):
-        if created:
-            Profile.objects.create(user=instance)
-        instance.profile.save()"""
 
 
 
@@ -79,3 +66,27 @@ class Contact(models.Model):
 
     def __str__(self):
         return f'{self.user_from} подписан на {self.user_to}'
+    
+
+# Добавление поля в User динамически
+user_model = get_user_model()
+user_model.add_to_class('following', models.ManyToManyField('self', through=Contact, related_name='followers', symmetrical=False))
+
+
+class Message(models.Model):
+    title = models.CharField(max_length = 50, blank=True, null=True)
+    content = models.TextField()
+    sended = models.DateField(auto_now_add = True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['-sended'])
+        ]
+        ordering = ['sended']
+
+        verbose_name_plural = "Сообщения"
+        verbose_name = "Сообщение"
+
+    def __str__(self):
+        return f'{self.title}'
+    

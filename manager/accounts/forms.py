@@ -1,9 +1,20 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User 
 from django import forms 
-from .models import Profile
+from .models import Profile, Message
 from phonenumber_field.formfields import PhoneNumberField
 from phonenumber_field.widgets import PhoneNumberPrefixWidget
+
+class MessageForm(forms.ModelForm):
+    class Meta:
+        model = Message
+        fields = ['title', 'content']
+
+    def __init__(self, *args, **kwargs):
+        super(MessageForm, self).__init__(*args, **kwargs)
+        self.fields['title'].widget.attrs.update({'class': 'form-control'})
+        self.fields['content'].widget.attrs.update({'class': 'form-control'})
+
 
 class RegisterUserForm(UserCreationForm):
     """username = forms.CharField(label='username', min_length=5, max_length=150)  
@@ -128,3 +139,5 @@ class ProfileEducationAndExperienceEditForm(forms.ModelForm):
 
         self.fields['skills'].widget.attrs['class'] = 'form-control'
         self.fields['job_title'].widget.attrs['class'] = 'form-control'
+
+

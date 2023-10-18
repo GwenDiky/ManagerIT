@@ -12,6 +12,7 @@ app_name = "accounts"
 #маршрутизатор
 
 urlpatterns = [
+    path('password_change/', ChangePasswordView.as_view(), name='password_change'),
     path('register_user', views.register_user, name="register_user"),
     path('', include('django.contrib.auth.urls')),
     path('edit/', views.edit, name='edit'),
@@ -20,7 +21,9 @@ urlpatterns = [
     path('profile/', views.show_profile, name='show_profile'),
     path('profile/<int:pk>', views.show_profile_by_pk, name='profile'),
     path('all_profiles/', views.all_profiles, name='all_profiles'),
-    path('password_change/', ChangePasswordView.as_view(), name='password_change'),
+    path('coworkers/', views.show_coworkers, name='coworkers'),
+    path('coworkers/<int:pk>', views.add_coworkers, name='add-coworkers'),
+    path('message-form/', MessageFormView.as_view(), name='message-form')
 ]
 
 

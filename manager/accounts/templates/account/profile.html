@@ -22,14 +22,28 @@
                             <div class='card-container'>
                                 <div class='container-image'>
                                     <a href="{% url 'main:main_page' %}"><i class="fi fi-rr-angle-right" style='font-size: 25px; text-align: left;'></i></a>
-                                    <a href="{% url 'accounts:edit' %}"><i class="fi fi-rr-user-add" style='font-size: 25px;'></i></a>
-                                    <a href=""><i class="fi fi-rr-paper-plane" style='font-size: 25px;'></i></a>
-                                    <a href="{% url 'accounts:password_change' %}"><i class="fi fi-rr-key" style='font-size: 25px;'></i></a>
-                                    <a href="{% url 'accounts:edit' %}"><i class="fi fi-rr-settings-sliders" style='font-size: 25px;'></i></a>
 
+                                    {% if profile.user != request.user %}            
+                                        {% for p in current_profile %}
+                                            {% if profile not in p.follows.all %}
+                                                <a href="{% url 'accounts:add-coworkers' profile.id %}" data-id='{{ user.id }}' data-action="{% if request.user in user.followers.all %}un{% endif %}follow" class="follow button"><i class="fi fi-rr-user-add" style='font-size: 25px;'></i></a>
+                                            {% endif %}
+                                        {% endfor %}
+
+
+                                        <a href="{% url 'accounts:message-form' %}"><i class="fi fi-rr-paper-plane" style='font-size: 25px;'></i></a>
+                                    {% endif %}
+                                    {% if profile.user == request.user %}
+                                        <a href="{% url 'accounts:password_change' %}"><i class="fi fi-rr-key" style='font-size: 25px;'></i></a>
+                                        <a href="{% url 'accounts:edit' %}"><i class="fi fi-rr-settings-sliders" style='font-size: 25px;'></i></a>
+                                    {% endif %}
+                                    
                                 </div>
                         
                             </div>
+
+                           
+
                         </div>
                 </div>
                 <div class='col-sm-8'>
@@ -123,7 +137,7 @@
                             <p class='p-style-edd184ef' style='font-size: 20px;'>О себе 
                                 <a href="{% url 'accounts:edit-description' %}"><i class="fi fi-rr-pencil" style='margin-left: 10px;'></i></a>
                             </p>
-                            <p class='p-style-ad46357e' style='font-size: 16px;'>{{ profile.description|markdown|safe }}</p>
+                            <p class='p-style-ad46357e' style='font-size: 16px; font-family: Montserrat;'>{{ profile.description|safe }}</p>
                         </div>
                     </div>
                 </div>

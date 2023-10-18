@@ -14,6 +14,7 @@
         <h3 style='font-size: 20px;'>Посты, помечанные тегом "{{ tag.name }}"</h3>
     {% endif %}
 
+
     <div class='search-tasks' style='margin-bottom: 30px;'>
         {% if query %}
             <div class='tasks-includes-tags' style='margin: 0 auto;'>
@@ -26,7 +27,7 @@
             
                 {% for task in results %}
                 <div class='card'>
-                    <div class='card-body'>
+                    <div class='card-body'>f
                         <h5><a href="{{ task.get_absolute_url }}">{{ task.title }}</a></h5>
                         <p>{{ task.content }}</p>
                         <p>Теги: {% for tag in task.tags.all %}
@@ -64,7 +65,11 @@
                 </div>
         <br><br>
         {% for task in tasks %}
+        {% if task.status.title == '+' %}
+        <div class='card' style='background: #f0f0f0;'>
+        {% else %}
         <div class='card'>
+        {% endif %}
             <div class='card-body'>
                 <h5><a href="{{ task.get_absolute_url }}">{{ task.title }}</a></h5>
                 <p>{{ task.content }}</p>
@@ -84,7 +89,9 @@
         </div>
         <br>
     {% endfor %}
-    {% include "main/paginator.html" with page=page_obj %}
+
+    <a href="{% url 'main:tasks_pdf' %}" class='start-button' style='margin-top: 20px;'><p>Скачать все задачи в pdf</p></a>
+    <div style='text-align: center; margin-top: 30px;'>{% include "main/paginator.html" with page=tasks %}</div>
     <!--Типовое представление ListView передает запрошенную страницу в переменную с именем page_obj-->
         {% endif %}
     </div>

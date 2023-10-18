@@ -4,13 +4,20 @@ from django.contrib.auth.decorators import login_required
 from accounts.forms import RegisterUserForm, UserEditForm, ProfileEditForm, ProfileDescriptionEditForm, ProfileEducationAndExperienceEditForm
 from .models import Profile
 from django.views.generic.detail import DetailView
+from django.views.generic import ListView
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy 
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.messages.views import SuccessMessageMixin
-# Create your views here.
+from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.postgres.search import SearchVector, \
+                                        SearchQuery, SearchRank
+from main.forms import SearchForm
+from django.views.generic.edit import FormView
+from .forms import MessageForm
 
 def login_user(request):
     if request.method == "POST":
@@ -120,27 +127,46 @@ def show_profile(request):
 
 def show_profile_by_pk(request, pk):
     user = User.objects.get(pk = pk)
+    current_profile = Profile.objects.filter(user = request.user)
     profiles = Profile.objects.filter(user = user)
 
-    return render(request, 'account/profile.html', {'profiles': profiles})
+
+    return render(request, 'account/profile.html', {'profiles': profiles, 'current_profile':current_profile})
 
 def all_profiles(request):
+
     all_profiles = Profile.objects.exclude(user = request.user)
-    return render(request, 'account/all_profiles.html', {'all_profiles':all_profiles})
+
+    paginator = Paginator(all_profiles, 3)
+    page_number = request.GET.get('page', 1)
+    try:
+        all_profiles = paginator.page(page_number)
+    except EmptyPage:
+        all_profiles = paginator.page(paginator.num_pages)
+    except PageNotAnInteger:
+        all_profiles = paginator.page(1)
+
+    return render(request, 'account/all_profiles.html', {'all_profiles':all_profiles, 'page_obj':page_number})
 
 class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
     template_name = 'account/change_password.html'
     success_message = "Пароль успешно изменен"
     success_url = reverse_lazy('main:home')
-
-"""class ShowProfilePageView(DetailView):
-    model = Profile
-    template_name = 'account/profile.html'
-
-    def get_context_data(self, *args, **kwargs):
-        users = Profile.objects.all()
-        context = super(ShowProfilePageView, self).get_context_data(self, **kwargs)
-        page_user = get_object_or_404(Profile, id=self.kwargs['pk'])
-        context['page_user'] = page_user
-        return context"""
     
+
+def show_coworkers(request):
+    profiles = Profile.objects.filter(user = request.user)
+    return render(request, 'account/coworkers.html', {'profiles': profiles})
+
+def add_coworkers(request, pk):
+    profile = Profile.objects.get(user = request.user)
+    profile.follows.add(Profile.objects.get(pk = pk))
+    profile.save()
+
+    profiles = Profile.objects.filter(user = request.user)
+    return render(request, 'account/coworkers.html', {'profiles': profiles})
+
+class MessageFormView(FormView):
+    template_name = 'account/message.html'
+    form_class = MessageForm
+    success_url = reverse_lazy('main:home')

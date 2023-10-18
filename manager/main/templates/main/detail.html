@@ -10,8 +10,11 @@
 
 {% block content %}
 <div style='margin-left: 30px;'>
-    <a class='btn btn-outline-dark' href="{% url 'main:all_tasks' %}">Назад</a>
-    <br><br>
+    <a class='start-button3' href="{% url 'main:all_tasks' %}">Назад</a>
+    <br>
+
+    <div class='card' style='margin-right: 30px;'>
+        <div class='card-body'>
             <h3>{{ task.title }}</h3>
             <ul class='detail-list' style='padding-left: 0px;'>
             <li style='padding: 0px;'><b>В разработке участвуют:</b> 
@@ -20,7 +23,7 @@
                 {% endfor %}
             </li>
             <li><b>Описание задачи:</b> {{ task.content }}</li>
-            <li><b>Тип задачи:</b> {{ task.type }};</li>
+            <li><b>Сложность задачи:</b> {{ task.type }};</li>
             <li><b>Компания:</b> {{ task.company }};</li>
             <li><b>Статус:</b> {% if task.status.title == '+' %}
             Завершена;{%  endif %}</li>
@@ -36,24 +39,53 @@
             </li></ul>
             <hr>
             <p>
-                <a class="btn btn-outline-dark btn-lg" role="button" href="{% url 'main:task_share' task.id %}">Поделиться</a>
-                <a class='btn btn-outline-primary btn-lg' role='button' href='edit/{{ task.id }}'>Редактировать</a>
-                <a class='btn btn-outline-danger btn-lg' role='button' href='delete/{{ task.id }}'>Удалить</a>
+                <div class='row' style='width: 80%;'>
+                    <div class='col-sm-2'><a id='task-button-2' role="button" href="{% url 'main:task_share' task.id %}">Поделиться</a></div>
+                    <div class='col-sm-2'><a class='start-button2' role='button' href='edit/{{ task.id }}'>Редактировать</a></div>
+                    <div class='col-sm-2'><a id='task-button-2' role='button' href='delete/{{ task.id }}'>Удалить</a></div>
+                    <div class='col-sm-2'><a href='task_pdf/{{ task.id }}' role='button' class='start-button'>Скачать (pdf)</a></div>
+                </div>
             </p>
             {{ task.image.image }}
-
-        <div class="comment_section">
-            {% include "main/includes/comment_form.html" %}
+            </div>
         </div>
 
+        <br><br>
 
+        <div class='card' style='margin-right: 30px;'>
+            <div class='card-body'>
+            <h3>Похожие посты:</h3>
+            {% for task in similiar_tasks %}
+                <p>
+                    <a href="{{ task.get_absolute_url }}">{{ task.title }}</a>
+                </p>
+                {% empty %}
+                Похожих постов нет.
+            {% endfor %}
+        </div></div>
 
-        <hr>
-        {% with comments.count as total_comments %}
-        <h3>
-            Количество комментариев: {{ total_comments }}
-        </h3>
-    {% endwith %}
+        <br><br>
+
+        <div class='row'>
+            <div class='col'>
+                <div class='card' style='margin-right: 30px; padding-top: 0px; margin-top: 0px;'>
+                    <div class='card-body' style='padding-top: 0px; margin-top: 0px;'>
+                        <div class="comment_section">
+                            {% include "main/includes/comment_form.html" %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class='col'>
+
+            <div class='card' style='margin-right: 30px;'>
+                <div class='card-body'>
+            {% with comments.count as total_comments %}
+            <h3>
+                Количество комментариев: {{ total_comments }}
+            </h3>
+        {% endwith %}
 
         {% for comment in comments %}
         <div class="comment">
@@ -73,21 +105,14 @@
         {% empty %}
         <p>Нет комментариев.</p>
     {% endfor %}
+    </div>
+</div></div>
+
+    
+    </div>
+
     <br>
 
-        <footer>
-        <hr>
-        <h3>Похожие посты:</h3>
-        {% for task in similiar_tasks %}
-            <p>
-                <a href="{{ task.get_absolute_url }}">{{ task.title }}</a>
-            </p>
-            {% empty %}
-            Похожих постов нет.
-        {% endfor %}
-        
-        <br><br>
-        </footer>
     </div>
 
 {% endblock %}

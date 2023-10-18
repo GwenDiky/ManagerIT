@@ -44,12 +44,23 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #local apps
     'main',
     'taggit',
     'django.contrib.sites',
     'django.contrib.sitemaps',
+
+    #3d party apps
     'rest_framework',
+    'social_django',
+    'drf_yasg',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated', # new
+]
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -109,6 +120,9 @@ DATABASES = {
         'PASSWORD': 'root',
         'HOST': 'localhost',
         'PORT': '',
+        'TEST':{
+            'NAME':'main_test',
+        }
     }
 }
 
@@ -157,7 +171,20 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+SOCIAL_AUTH_FACEBOOK_KEY = '843102210801185'
+SOCIAL_AUTH_FACEBOOK_SECRET = "5c099a2d3f9f14a43cd2f17a8eca8c0e"
+
+TWITTER_CONSUMER_KEY = 'G2wMq4KYpTmgZDcjg0EzQ'
+TWITTER_CONSUMER_SECRET = 'rGHMGIbOwIEpoxjXzOahc2KmvxY8h10DpZ90LwqEjec'
+
+GITHUB_APP_ID = '22a3591e4f0c5811307d'
+GITHUB_API_SECRET = 'efc37c092ab25469765c74eac46675a85deba838'
+
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend', #стандартный бэкенд для аутентификации с помощью пользовательского имени и пароля
     'accounts.authentication.EmailAuthBackend', #собственный бэкенд аутентификации с применением электронной почты
+    'social_core.backends.linkedin.LinkedinOAuth2',
+    'social_core.backends.instagram.InstagramOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
 ]  

@@ -3,6 +3,7 @@
 
 {% block extra_head_links %}
   <link rel="stylesheet" type="text/css" href="{% static 'accounts/css/login.css' %}">
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 {% endblock %}
 
 {% block content %}
@@ -30,7 +31,20 @@
               <div class='login-button-container'>
                 <button type="submit" class="login-button">Войти</button>
               </div>
-            
+
+
+            <i class="fa-brands fa-facebook"></i>
+            <i class="fa-brands fa-square-facebook"></i>
+            <i class="fa-brands fa-facebook-f"></i>
+
+
+            <div class='row' style='margin: 0px auto;' id="icons">
+              <div class='col'></div>
+              <div class='col'><a href="{% url 'social:begin' 'facebook' %}"><img src="{% static 'accounts/img/facebook.png' %}" class='rounded' id='task-dashbord-img' alt="Facebook"></a></div>
+              <div class='col'><a href="{% url 'social:begin' 'twitter' %}"><img src="{% static 'accounts/img/twitter.png' %}" class='rounded' id='task-dashbord-img' alt="Twitter" ></a></div>
+              <div class='col'><a href="{% url 'social:begin' 'github' %}"><img src="{% static 'accounts/img/github.png' %}" class='rounded' id='task-dashbord-img' alt="GitHub" ></a></div>
+              <div class='col'></div>
+            </div>     
             </form>
             <div class='registration-section'>
               <p class='registration-info'>Нет аккаунта?</p>
@@ -40,5 +54,6 @@
       </div>
       <div class='col-sm-4'></div>
     </div>
+    <br><br>
 </div>
 {% endblock %}
